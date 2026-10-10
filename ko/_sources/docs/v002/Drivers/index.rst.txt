@@ -19,9 +19,15 @@ ISA 참조 URL 만 pccx v002 기준으로 갱신.
 
    v002 드라이버는 **bring-up** 단계이다. 공개 ``uca_*`` API 표면은
    컴파일되고 AXI-Lite HAL 스켈레톤은 존재하지만, end-to-end 흐름
-   ``MEMSET → MEMCPY → GEMV → MEMCPY readback`` 은 아직 실 하드웨어
-   상에서 RTL 과 검증되지 않았다. 미해결 검증 항목은
+   ``MEMSET → MEMCPY → GEMV → MEMCPY readback`` 는 아직 실제 하드웨어
+   상에서 RTL과 검증되지 않았다. 미해결 검증 항목은
    :doc:`../Verification/index` §2 참고.
+
+.. note::
+
+   보드와 런타임의 개발 현황은
+   `KV260 이슈 <https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260/issues>`_\ 와
+   :doc:`/docs/Evidence/index`\ 에서 확인하세요.
 
 .. toctree::
    :maxdepth: 1

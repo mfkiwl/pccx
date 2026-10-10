@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # 툴체인 데모
 
 pccx Sphinx 빌드에 연결된 모든 다이어그램 · 플롯 파이프라인을 한 번씩 쓰는
@@ -23,5 +27,4 @@ plot_bandwidth
 | [](svg_themed_demo)                | 수작업 SVG + Furo CSS 변수   | yes     |
 | [](plot_bandwidth)                 | `scienceplots` + `sphinx-gallery` | yes (팔레트) |
 
-작성 규약은 `CLAUDE.md` §5 (Diagram Authoring Rules) 와 §6 (Plotting
-Conventions) 를 참고.
+이 페이지들은 저장소의 다이어그램 및 플롯 작성 규약을 보여준다.

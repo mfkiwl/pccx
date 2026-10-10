@@ -82,12 +82,47 @@ pccx balances efficiency with accuracy:
 3. Documentation
 ----------------
 
-Detailed technical specifications live under :doc:`v002/index`:
+Detailed technical specifications for the active **v002** line live
+under :doc:`v002/index`:
 
-1. :doc:`v002/ISA/index` — 64-bit custom instruction set.
-2. :doc:`v002/Architecture/index` — hardware architecture and
+1. :doc:`quickstart` — reader path for release-line claims, evidence,
+   local checks, deploy posture, and common v002.1 questions.
+2. :doc:`v002/ISA/index` — 64-bit custom instruction set.
+3. :doc:`v002/Architecture/index` — hardware architecture and
    floorplan.
-3. :doc:`v002/Drivers/index` — driver and SDK documentation.
+4. :doc:`v002/Drivers/index` — driver and SDK documentation.
+
+v003 and the Vision track no longer live on this Sphinx site. They are
+maintained at `docs.altifigence.com <https://docs.altifigence.com/>`__,
+which is now the canonical hub for every PCCX™ track beyond v002.
+
+The :doc:`roadmap` retains the historical relationship between tracks.
+
+Evidence-gated v002.1 pointers:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 24 44 32
+
+   * - Item
+     - Link
+     - Guard
+   * - Architecture explainer
+     - `docs/spec/v002.1-architecture-explainer.md (PR #48) <https://github.com/pccxai/pccx/blob/docs/v002.1-architecture-explainer/docs/spec/v002.1-architecture-explainer.md>`__
+     - Draft explainer; no board-run, closed-timing, deployable-bitstream,
+       or measured-throughput claim.
+   * - Evidence inventory
+     - `pccx-FPGA-NPU-LLM-kv260 evidence inventory (PR #95) <https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260/blob/docs/v002.1-evidence-inventory/docs/evidence/v002.1-evidence-inventory.md>`__
+     - Inventory of landed and pending evidence; release claims remain
+       gated by measured artifacts.
+   * - Bitstream runbook
+     - `pccx-FPGA-NPU-LLM-kv260 bitstream runbook (PR #82) <https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260/blob/build/v002-kv260-bitstream-runbook/docs/runbooks/v002.1-bitstream-build.md>`__
+     - Pre-flight runbook; Vivado and KV260 board execution are not
+       claimed by this link.
+   * - Project board
+     - `PCCX Roadmap project board <https://github.com/orgs/pccxai/projects/1>`__
+     - Planning tracker; status must be read with the evidence gates
+       above.
 
 The v001 architecture is archived at
 :doc:`archive/experimental_v001/index`.
@@ -97,66 +132,33 @@ The v001 architecture is archived at
 4. License
 ----------
 
-Licensed under the **Apache License 2.0**. This provides freedom of use
-and modification while protecting the architecture from patent-related
-risks, keeping the ecosystem safe for open-source hardware development.
+This repository uses a mixed rights model. Source code is licensed under
+the **Apache License 2.0**. PCCX™ documentation, site copy, diagrams,
+logos, trademarks, and brand assets are protected company assets of
+Altifigence.
 
 --------------
 
-5. Ecosystem
-------------
+5. Project and participation
+----------------------------------------
 
-.. grid:: 1 1 2 2
-   :gutter: 3 4 4 4
-   :class-container: pccx-ecosystem-grid
+Reusable RTL and testbenches live in
+`pccx-v002 <https://github.com/pccxai/pccx-v002>`_.
+`KV260 integration <https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260>`_
+owns board and runtime work.
+`pccx-v003 <https://github.com/pccxai/pccx-v003>`_ contains RTL design
+and testbenches for the v003 architecture.
 
-   .. grid-item-card:: :octicon:`cpu;1.5em;sd-mr-2` RTL Implementation
-      :columns: 12 12 8 8
-      :class-card: pccx-hero-card
-      :link: https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260
-      :link-type: url
-      :link-alt: Open the pccx-FPGA-NPU-LLM-kv260 repository on GitHub
-
-      **github.com/pccxai/pccx-FPGA-NPU-LLM-kv260**
-
-      The active **v002** SystemVerilog sources — ISA package, controller,
-      compute cores (GEMM / GEMV / CVO), memory hierarchy. Target device
-      is the Xilinx Kria **KV260** (Zynq UltraScale+ ZU5EV).
-
-      Every v002 RTL reference page on this site links back to the exact
-      ``.sv`` file in that repository.
-
-   .. grid-item::
-      :columns: 12 12 4 4
-
-      .. grid:: 1
-         :gutter: 3
-
-         .. grid-item-card:: :octicon:`book;1em;sd-mr-1` Documentation source
-            :link: https://github.com/pccxai/pccx
-            :link-type: url
-            :link-alt: Open the pccx documentation repository on GitHub
-
-            **github.com/pccxai/pccx** — the Sphinx project powering this site.
-
-         .. grid-item-card:: :octicon:`telescope;1em;sd-mr-1` pccx-lab (verify / profile)
-            :link: https://pccxai.github.io/pccx/en/lab/
-            :link-type: url
-            :link-alt: Open the pccx-lab verification + profiling hub
-
-            **pccx-lab** — Tauri 2 IDE. ``.pccx`` trace loader,
-            ``run_verification`` runner, Roofline / Bottleneck cards,
-            Vivado synth report view. See the
-            `verification workflow guide <https://pccxai.github.io/pccx/en/lab/verification-workflow.html>`_.
-
-         .. grid-item-card:: :octicon:`person;1em;sd-mr-1` Author portfolio
-            :link: https://hkimw.github.io/hkimw/
-            :link-type: url
-            :link-alt: Open the hkimw portfolio site
-
-            **hkimw.github.io/hkimw** — blog, other projects, about.
+Begin a small RTL or verification contribution at :doc:`quickstart`.
+Read :doc:`onboarding/getting-started` for current execution prerequisites
+and :doc:`roadmap` for upcoming work.
 
 .. |License| image:: https://img.shields.io/badge/License-Apache_2.0-blue.svg
 .. |Architecture| image:: https://img.shields.io/badge/Architecture-Scalable_NPU-purple
 .. |Target| image:: https://img.shields.io/badge/Target-Edge_AI-orange
 .. |Precision| image:: https://img.shields.io/badge/Precision-W4A8_Promotion-green
+
+.. toctree::
+   :hidden:
+
+   quickstart

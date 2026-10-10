@@ -1,3 +1,9 @@
+/*
+PCCX™ — reusable AI accelerator project.
+SPDX-FileCopyrightText: 2026 Hyun Woo Kim
+SPDX-License-Identifier: Apache-2.0
+*/
+
 /* =============================================================================
  * pccx — Furo theme overrides
  *
@@ -73,7 +79,7 @@ article table.docutils thead th {
   font-weight: 600;
 }
 
-/* -- WaveDrom: tidy up the auto-generated SVG ------------------------------ */
+/* -- WaveDrom: tidy up the rendered SVG ------------------------------------ */
 article .wavedrom,
 article svg.wavedrom-svg {
   max-width: 100%;
@@ -111,39 +117,52 @@ article div.sphx-glr-thumbnails .sphx-glr-thumbcontainer:hover {
 }
 
 /* -- Footer icons ---------------------------------------------------------- */
-.footer-icons a:hover svg {
-  fill: var(--color-brand-primary);
+.bottom-of-page {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-/* Labeled footer icons: GitHub / RTL repo / blog, each with a visible label
- * so readers can recognize the destination without hovering. The row wraps on
- * narrow viewports; icons inherit theme colors via currentColor. */
-.footer-icons a.pccx-footer-icon {
+.bottom-of-page .left-details {
+  flex: 1 1 16rem;
+}
+.bottom-of-page .right-details {
+  flex: 1 1 24rem;
+}
+.bottom-of-page .icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  justify-content: flex-start;
+}
+
+/* Labeled links use Furo's actual footer container and wrap as whole items. */
+.bottom-of-page a.pccx-footer-icon {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
   padding: 0.2em 0.55em;
   border-radius: 6px;
-  font-size: 0.9em;
-  line-height: 1;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  white-space: nowrap;
   color: var(--color-foreground-secondary);
   transition:
     background-color 120ms ease-in-out,
     color            120ms ease-in-out;
 }
-.footer-icons a.pccx-footer-icon:hover,
-.footer-icons a.pccx-footer-icon:focus-visible {
+.bottom-of-page a.pccx-footer-icon:hover,
+.bottom-of-page a.pccx-footer-icon:focus-visible {
   background-color: var(--color-background-hover);
   color: var(--color-brand-primary);
 }
-.footer-icons a.pccx-footer-icon svg {
+.bottom-of-page a.pccx-footer-icon svg {
   flex: 0 0 auto;
   width: 1.1em;
   height: 1.1em;
 }
-.footer-icons a.pccx-footer-icon:hover svg {
+.bottom-of-page a.pccx-footer-icon:hover svg {
   color: var(--color-brand-primary);
-  fill: var(--color-brand-primary);
 }
 .pccx-footer-icon__label {
   font-weight: 500;
@@ -232,13 +251,54 @@ article .pccx-hero-card .sd-card-title svg {
   color: var(--color-brand-primary);
   vertical-align: -0.15em;
 }
-/* Lab card: pccx-lab — secondary accent (brand orange). */
-article .pccx-lab-card {
-  border-left: 3px solid var(--pccx-accent, #ff7a00);
+.pccx-version-switcher-item {
+  margin: 0.35rem 0 0.75rem;
+  list-style: none;
 }
-article .pccx-lab-card .sd-card-title svg {
-  color: var(--pccx-accent, #ff7a00);
-  vertical-align: -0.15em;
+
+.pccx-version-switcher {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-background-border);
+  border-radius: 6px;
+  background: var(--color-background-secondary);
+}
+
+.pccx-version-switcher__label {
+  margin-bottom: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-foreground-muted);
+  text-transform: uppercase;
+}
+
+.pccx-version-switcher__list {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.pccx-version-switcher__entry {
+  display: block;
+  padding: 0.24rem 0;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  color: var(--color-foreground-secondary);
+  text-decoration: none !important;
+}
+
+.pccx-version-switcher__entry:hover,
+.pccx-version-switcher__entry:focus-visible {
+  color: var(--color-brand-primary);
+}
+
+.pccx-version-switcher__entry.is-active {
+  font-weight: 700;
+  color: var(--color-foreground-primary);
+}
+
+.pccx-version-switcher__entry.is-disabled {
+  color: var(--color-foreground-muted);
+  cursor: default;
 }
 
 /* -- rtl_source admonition (injected by _ext/rtl_source.py) ---------------- */

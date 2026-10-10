@@ -24,6 +24,12 @@ comment updates for the pccx v002 ISA reference URL.
    not yet been validated against the RTL on hardware. See
    :doc:`../Verification/index` §2 for the open verification items.
 
+.. note::
+
+   Follow board and runtime development in
+   `KV260 issues <https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260/issues>`_
+   and :doc:`/docs/Evidence/index`.
+
 .. toctree::
    :maxdepth: 1
 

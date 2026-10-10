@@ -2,128 +2,80 @@
 myst:
   html_meta:
     description lang=en: |
-      One-command reproducer for the pccx NPU — clone, build, load the
-      sample .pccx trace, run the Sail formal model, open the pccx-lab
-      profiler.  Docker recipe + native bare-metal paths, both tested
-      on Ubuntu 24.04.
+      Start contributing to PCCX RTL and verification: find public sources,
+      check repository boundaries, understand the remaining simulation dependency,
+      and prepare a focused pull request.
 ---
 
 # Quickstart
 
-The shortest path from "git clone" to "I'm looking at a pccx trace".
-Everything on this page is the **reproducer**: `docker compose up`
-lands you at a running profiler with a real capture loaded.
+PCCX welcomes developers with SystemVerilog RTL and verification experience.
+Start with one module or testbench. See the {doc}`roadmap` for upcoming work.
 
-## 0. What you get
+## 1. Choose the right repository
 
-```{mermaid}
-flowchart LR
-    A[RTL Repository<br>Vivado Synth] -->|generates| B(16-token .pccx trace)
-    A -->|produces| C(Sail ISA Model)
-    
-    B -.->|loads into| D{pccx-lab Profiler}
-    C -.->|type-checks in| E[OCaml / opam]
-    
-    D --> F[CLI Analytics<br>roofline / report]
-    D --> G[Tauri Desktop App<br>Visual IDE]
-    
-    style D fill:#ff7a00,stroke:#fff,color:#fff
-```
+| Work | Repository |
+| --- | --- |
+| Reusable v002 RTL, testbenches and Sail model | [pccx-v002](https://github.com/pccxai/pccx-v002) |
+| KV260 integration, runtime and board evidence | [pccx-FPGA-NPU-LLM-kv260](https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260) |
+| v003 RTL and testbenches | [pccx-v003](https://github.com/pccxai/pccx-v003) |
+| Architecture documentation and project guidance | [pccx](https://github.com/pccxai/pccx) |
 
-| Artefact | Produced by | Opens with |
-|---|---|---|
-| `.pccx` trace (16-token Gemma-3N decode) | `pccx-FPGA-NPU-LLM-kv260/hw/sim/run_verification.sh` | `pccx-lab` (Tauri app), `pccx_cli` |
-| Sail ISA model (type-checked)            | `pccx-FPGA-NPU-LLM-kv260/formal/sail/`                | `sail`, `sail --doc` |
-| Vivado synth + timing reports            | `pccx-FPGA-NPU-LLM-kv260/vivado/build.sh synth`       | `pccx-lab` IDE → Verification → Synth Status |
-| Trace analytics                          | `pccx-lab` workspace                                  | `pccx_cli --roofline --report-md`, IDE analyzer tabs |
+Read {doc}`v002/ISA/index` and {doc}`v002/RTL/index` for the module you
+want to work on. Use each repository's contribution and license files.
 
-## 1. Prerequisites
+## 2. Make the first local check
 
-A single 64-bit Linux box (Ubuntu 24.04 tested) with:
-
-- `git` ≥ 2.40
-- `opam` + `ocaml` ≥ 4.14 — for Sail
-- `docker` ≥ 24 — for the reproducer container
-- `rustup` (stable toolchain) — for `pccx-core` + Tauri
-- *(optional)* Xilinx Vivado 2024.1 — for the RTL synth path
-- *(optional)* Xilinx Kria KV260 board — for live token-generation
-
-Only the first four are required to reproduce the **software** half of
-the project.  Board access is optional.
-
-## 2. Clone all three repos
-
-pccx is a **three-repo federation** (see the ecosystem section on
-{doc}`index`).  Clone them into sibling directories:
+In Linux, WSL, or a Bash environment with Git and standard Unix tools:
 
 ```bash
-mkdir -p ~/pccx-ws && cd ~/pccx-ws
-git clone https://github.com/pccxai/pccx.git                    # docs (this site)
-git clone https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260.git  # RTL + Sail model
-git clone https://github.com/pccxai/pccx-lab.git                 # profiler + UVM Copilot
+git clone https://github.com/pccxai/pccx-v002.git
+cd pccx-v002
+bash scripts/check_repo_boundary.sh
+git rev-parse HEAD
+bash LLM/sim/run_verification.sh --list
 ```
 
-## 3. One-command reproducer (Docker)
+The boundary check checks the repository layout, and `--list` shows the
+testbench names. To run simulations, see the Vivado and converter setup
+notes in {doc}`onboarding/getting-started`. We are simplifying that setup
+through [KV260 #152](https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260/issues/152).
 
-```{admonition} Planned — not yet shipped
-:class: warning
+## 3. Prepare a focused contribution
 
-The Docker reproducer (`scripts/docker/quickstart.yml`) is tracked on
-the pccx-lab roadmap but has not landed on `main` yet.  Until it does,
-follow the [native path below](#4-native-path-no-docker) — it is
-identical to what the container will run internally.
-```
+Choose one behavior: reset, a ready/valid handshake, a boundary condition,
+or an instruction decode. Check the existing testbench before proposing
+new coverage. Record the source SHA, tool versions, input, expected result,
+actual result and raw log. If the run is blocked, report that outcome.
 
-## 4. Native path (no Docker)
+Use the owning repository's issues to agree on scope and a reviewer.
+See the [contribution guide](https://github.com/pccxai/pccx/blob/main/CONTRIBUTING.md).
+
+## 4. Build a documentation change
+
+In Linux or WSL, with Python, Make and Graphviz available:
 
 ```bash
-# ── Sail model ─────────────────────────────────────────────────
-eval $(opam env)
-cd ~/pccx-ws/pccx-FPGA-NPU-LLM-kv260/formal/sail
-make check                           # type-check; < 5 s
-
-# ── pccx-core + CLI ────────────────────────────────────────────
-cd ~/pccx-ws/pccx-lab
-cargo build -p pccx-reports --bin pccx_cli --release
-./target/release/pccx_cli \
-    samples/gemma3n_16tok_smoke.pccx \
-    --roofline --report-md          # header + roofline + bottleneck
-
-# ── pccx-lab (Tauri desktop app) ───────────────────────────────
-cd ui
-npm ci && npm run tauri dev
+git clone https://github.com/pccxai/pccx.git
+cd pccx
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements.txt
+make strict REQUIRE_RTL=0
 ```
 
-The `samples/` directory ships two pre-captured traces — see
-[`samples/README.md`](https://github.com/pccxai/pccx-lab/blob/main/samples/README.md):
+This builds both language trees with warnings as errors. `REQUIRE_RTL=0`
+is the documented docs-only mode; it does not verify embedded RTL source.
+For that check, follow the
+[README](https://github.com/pccxai/pccx/blob/main/README.md) to obtain the
+RTL sources and run `make strict`.
+Update the corresponding English and Korean guidance together.
 
-- `gemma3n_16tok_smoke.pccx`   (101 KB, 2,568 events)  — CI smoke size.
-- `gemma3n_128tok_decode.pccx` (797 KB, 20,488 events) — steady-state decode.
+The production documentation is published at
+[docs.pccx.ai](https://docs.pccx.ai/) through Cloudflare Pages.
 
-## 5. Board path (optional)
+## More resources
 
-```bash
-# Flash the bitstream and run a 16-token decode on the KV260.
-cd ~/pccx-ws/pccx-FPGA-NPU-LLM-kv260/scripts/board
-./bringup.sh kv260.local
-# Pulls the .pccx back to the host automatically; open in pccx-lab.
-```
-
-## 6. Where to go next
-
-- Read the [pccx-lab handbook](Lab/index) for the profiler API surface.
-- Read the [Formal model page](v002/Formal/index) for the Sail scaffold.
-- Read the [Evidence page](Evidence/index) for measured tok/s + latency
-  numbers (board runs in progress).
-
-## Cite this page
-
-```bibtex
-@misc{pccx_quickstart_2026,
-  title        = {pccx Quickstart: one-command reproducer for the open NPU},
-  author       = {Kim, Hyunwoo},
-  year         = {2026},
-  howpublished = {\url{https://pccxai.github.io/pccx/en/docs/quickstart.html}},
-  note         = {Part of pccx: \url{https://pccxai.github.io/pccx/}}
-}
-```
+Use your preferred editor for RTL and documentation work.
+Altifigence's [Digital Design Studio documentation](https://docs.altifigence.com/ide/)
+is also available. See {doc}`Evidence/index` for test records and log locations.

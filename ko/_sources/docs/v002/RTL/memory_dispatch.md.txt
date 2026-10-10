@@ -13,8 +13,10 @@ ACP DMA 경로, NPU 버스트 경로, CVO 스트림 경로의 세 채널로 분�
   `data_dest` 필드의 `data_route_e` 값에 따라 ACP 채널 또는 NPU 채널 커맨드로
   변환된 뒤 `mem_u_operation_queue`에 적재된다.
 - `memory_set_uop_t` (`IN_mem_set_uop`) — MEMSET 명령 디코드 결과.
-  fmap 또는 weight shape 상수 RAM(`fmap_array_shape` / `weight_array_shape`)에
-  직접 기록한다.
+  통합된 shape 상수 RAM (`shape_const_ram`,
+  {doc}`shape_const_ram` 참고) 에 FIFO 를 거치지 않고 직접 기록한다.
+  이전 revision 에서 사용되던 레거시 `fmap_array_shape` /
+  `weight_array_shape` 쌍을 대체한다.
 - `cvo_control_uop_t` (`IN_CVO_uop`) — CVO 명령 디코드 결과.
   `mem_CVO_stream_bridge`가 직접 감시하며, 디스패처의 FIFO를 거치지 않는다.
 
@@ -40,7 +42,7 @@ ACP DMA 경로, NPU 버스트 경로, CVO 스트림 경로의 세 채널로 분�
 
 RTL 정의:
 
-```{literalinclude} ../../../../codes/v002/hw/rtl/NPU_Controller/NPU_Control_Unit/ISA_PACKAGE/isa_pkg.sv
+```{literalinclude} ../../../../codes/v002/LLM/rtl/packages/isa/isa_pkg.sv
 :language: systemverilog
 :start-at: // ===| ACP / NPU Transfer uops (used by mem_dispatcher) |
 :end-before: endpackage
@@ -60,7 +62,7 @@ AXI 250 MHz 도메인에서 NPU 코어 400 MHz 도메인으로 교차하는 CDC 
 - `S_AXI_HP{0..3}_WEIGHT` → `M_CORE_HP{0..3}_WEIGHT`로 명명된
   `axis_if` 인터페이스를 사용한다.
 
-GEMM 가중치는 HP0/HP1을, GEMV 가중치는 HP2/HP3을 통해 공급된다(CLAUDE.md §4 참고).
+GEMM 가중치는 HP0/HP1을, GEMV 가중치는 HP2/HP3을 통해 공급된다.
 각 FIFO의 깊이 4096 × 128비트 = 64 KiB는 가중치 타일 한 배치를 버퍼링하기에
 충분한 크기다.
 

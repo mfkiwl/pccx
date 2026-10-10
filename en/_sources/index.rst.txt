@@ -1,101 +1,73 @@
-================================
-pccx Documentation
-================================
+========================================
+PCCX Documentation
+========================================
 
-Welcome to the **pccx** (Parallel Compute Core eXecutor) documentation.
-pccx is a scalable NPU architecture for accelerating Transformer-based LLMs
-on edge devices. Select a section from the sidebar to begin.
+PCCX (Parallel Compute Core eXecutor) is an open-source semiconductor
+project initiated and operated by Altifigence. Explore public RTL,
+verification and architecture documentation. SystemVerilog developers
+can begin with :doc:`docs/quickstart`.
 
-Ecosystem
----------
+Project
+-------
 
 .. grid:: 1 1 2 2
    :gutter: 3 4 4 4
    :class-container: pccx-ecosystem-grid
 
-   .. grid-item-card:: :octicon:`cpu;1.5em;sd-mr-2` RTL Implementation
-      :columns: 12 12 8 8
-      :class-card: pccx-hero-card
+   .. grid-item-card:: :octicon:`cpu;1.2em;sd-mr-1` v002 RTL
+      :link: https://github.com/pccxai/pccx-v002
+      :link-type: url
+
+      Reusable RTL, testbenches and the Sail ISA model. Start with a small verification contribution.
+
+   .. grid-item-card:: :octicon:`cpu;1.2em;sd-mr-1` KV260 integration
       :link: https://github.com/pccxai/pccx-FPGA-NPU-LLM-kv260
       :link-type: url
-      :link-alt: Open the pccx-FPGA-NPU-LLM-kv260 repository on GitHub
 
-      **github.com/pccxai/pccx-FPGA-NPU-LLM-kv260**
+      KV260 board integration, runtime and board tests using the v002 core.
 
-      The active **v002** SystemVerilog sources — ISA package, controller,
-      compute cores (GEMM / GEMV / CVO), memory hierarchy. Target device
-      is the Xilinx Kria **KV260** (Zynq UltraScale+ ZU5EV).
+   .. grid-item-card:: :octicon:`book;1.2em;sd-mr-1` Documentation source
+      :link: https://github.com/pccxai/pccx
+      :link-type: url
 
-      **Current focus:** Gemma-3N E4B @ W4A8KV4 remains an evidence-gated
-      target. Token-rate, board-run, and timing-closure results are pending
-      measured KV260 evidence (see :doc:`docs/Evidence/index`). Everything
-      else (v003 / Gemma-4 / Llama) lives on the :doc:`docs/roadmap`.
+      The English and Korean sources and contribution guidance for this site.
 
-      Every v002 RTL reference page on this site links back to the exact
-      ``.sv`` file in that repository.
+   .. grid-item-card:: :octicon:`beaker;1.2em;sd-mr-1` v003 RTL
+      :link: https://github.com/pccxai/pccx-v003
+      :link-type: url
 
-   .. grid-item::
-      :columns: 12 12 4 4
+      RTL design and testbenches for the v003 architecture.
 
-      .. grid:: 1
-         :gutter: 3
-
-         .. grid-item-card:: :octicon:`book;1em;sd-mr-1` Documentation source
-            :link: https://github.com/pccxai/pccx
-            :link-type: url
-            :link-alt: Open the pccx documentation repository on GitHub
-
-            **github.com/pccxai/pccx** — the Sphinx project powering this site.
-
-         .. grid-item-card:: :octicon:`person;1em;sd-mr-1` Author portfolio
-            :link: https://hkimw.github.io/hkimw/
-            :link-type: url
-            :link-alt: Open the hkimw portfolio site
-
-            **hkimw.github.io/hkimw** — blog, other projects, about.
-
-Tooling & Lab
--------------
+Contribute and verify
+---------------------
 
 .. grid:: 1 1 2 2
    :gutter: 3 4 4 4
    :class-container: pccx-toolchain-grid
 
-   .. grid-item-card:: :octicon:`beaker;1.2em;sd-mr-1` pccx-lab
-      :link: https://pccxai.github.io/pccx/en/lab/
-      :link-type: url
-      :link-alt: Open the pccx-lab verification lab
-      :class-card: pccx-lab-card
-
-      CLI-first verification lab for pccx traces, reports, diagnostics,
-      and workflow boundaries. GUI, IDE, launcher, and future MCP surfaces
-      should reuse the same CLI / core boundary instead of duplicating logic.
-
-      :bdg-warning:`Work in Progress`
-
-      Source: github.com/pccxai/pccx-lab
-
-   .. grid-item-card:: :octicon:`project-roadmap;1.2em;sd-mr-1` Design rationale
-      :link: https://pccxai.github.io/pccx/en/lab/design/rationale.html
-      :link-type: url
-      :link-alt: Read the pccx-lab design rationale
-
-      Why pccx-lab is one repo, not five. Phase 1 split the monolith
-      into a 10-crate Cargo workspace (``core``, ``reports``,
-      ``verification``, ``authoring``, ``evolve``, ``remote``, ``lsp``,
-      ``uvm_bridge``, ``ai_copilot``, ``ui/src-tauri``).
-
-   .. grid-item-card:: :octicon:`verified;1.2em;sd-mr-1` Formal model — Sail
-      :link: docs/v002/Formal/index
+   .. grid-item-card:: :octicon:`terminal;1.2em;sd-mr-1` Getting started
+      :link: docs/onboarding/getting-started
       :link-type: doc
-      :link-alt: Read the pccx Sail ISA model
 
-      **pccx is formally specified in** `Sail <https://sail-lang.org/>`_ —
-      the same ISA-semantics language used for **RISC-V**, **Arm**,
-      **CHERI**, and **Morello**. The 64-bit / 4-bit-opcode v002 ISA
-      lives under ``formal/sail/`` in the RTL repo; each SystemVerilog
-      ``typedef`` has a 1:1 Sail counterpart so width drift fails
-      Sail's type checker before it fails silicon.
+      Choose a repository, explore the RTL and prepare your first contribution.
+
+   .. grid-item-card:: :octicon:`project-roadmap;1.2em;sd-mr-1` Contribution roadmap
+      :link: docs/roadmap
+      :link-type: doc
+
+      Follow the plans for the test environment, first issues and contribution guides.
+
+   .. grid-item-card:: :octicon:`verified;1.2em;sd-mr-1` Verification and evidence
+      :link: docs/Evidence/index
+      :link-type: doc
+
+      Find simulation and board test records, source versions and logs.
+
+   .. grid-item-card:: :octicon:`terminal;1.2em;sd-mr-1` Digital Design Studio
+      :link: https://docs.altifigence.com/ide/
+      :link-type: url
+
+      Explore Altifigence's development tools for digital design.
 
 .. toctree::
    :maxdepth: 2
@@ -103,7 +75,9 @@ Tooling & Lab
 
    docs/index
    docs/quickstart
+   docs/onboarding/getting-started
    docs/Evidence/index
+   docs/repo-boundaries
    docs/roadmap
 
 .. toctree::
@@ -120,24 +94,14 @@ Tooling & Lab
 
 .. toctree::
    :maxdepth: 1
-   :caption: pccx-lab Handbook
-
-   docs/Lab/index
-
-.. toctree::
-   :maxdepth: 1
    :caption: Archive
 
    docs/archive/index
 
 .. toctree::
    :maxdepth: 1
-   :caption: Toolchain Demos
+   :caption: External links
 
-   docs/samples/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tools
-
-   pccx-lab — Verification Lab <https://pccxai.github.io/pccx/en/lab/>
+   Digital Design Studio <https://docs.altifigence.com/ide/>
+   Altifigence.com <https://altifigence.com/>
+   PCCX Transparency <https://pccx.ai/en/legal/transparency/>
